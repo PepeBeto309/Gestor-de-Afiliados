@@ -43,7 +43,7 @@ namespace Gestor_de_Afiliados
             this.btnAplicarOrdenamiento = new System.Windows.Forms.Button();
             this.rbOrdenFechaD = new System.Windows.Forms.RadioButton();
             this.rbOrdenFechaA = new System.Windows.Forms.RadioButton();
-            this.rdbOrdenID = new System.Windows.Forms.RadioButton();
+            this.rbOrdenID = new System.Windows.Forms.RadioButton();
             this.txtOrdenar = new System.Windows.Forms.Label();
             this.dgvTablaAfiliados = new System.Windows.Forms.DataGridView();
             this.mnsMenu = new System.Windows.Forms.MenuStrip();
@@ -177,7 +177,7 @@ namespace Gestor_de_Afiliados
             this.panel1.Controls.Add(this.btnAplicarOrdenamiento);
             this.panel1.Controls.Add(this.rbOrdenFechaD);
             this.panel1.Controls.Add(this.rbOrdenFechaA);
-            this.panel1.Controls.Add(this.rdbOrdenID);
+            this.panel1.Controls.Add(this.rbOrdenID);
             this.panel1.Controls.Add(this.txtOrdenar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -194,6 +194,7 @@ namespace Gestor_de_Afiliados
             this.btnAplicarOrdenamiento.TabIndex = 6;
             this.btnAplicarOrdenamiento.Text = "Apliacar Ordenamiento";
             this.btnAplicarOrdenamiento.UseVisualStyleBackColor = true;
+            this.btnAplicarOrdenamiento.Click += new System.EventHandler(this.btnAplicarOrdenamiento_Click);
             // 
             // rbOrdenFechaD
             // 
@@ -217,16 +218,16 @@ namespace Gestor_de_Afiliados
             this.rbOrdenFechaA.Text = "Fecha Ascendente";
             this.rbOrdenFechaA.UseVisualStyleBackColor = true;
             // 
-            // rdbOrdenID
+            // rbOrdenID
             // 
-            this.rdbOrdenID.AutoSize = true;
-            this.rdbOrdenID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rdbOrdenID.Location = new System.Drawing.Point(16, 68);
-            this.rdbOrdenID.Name = "rdbOrdenID";
-            this.rdbOrdenID.Size = new System.Drawing.Size(147, 24);
-            this.rdbOrdenID.TabIndex = 7;
-            this.rdbOrdenID.Text = "Ordenar por ID";
-            this.rdbOrdenID.UseVisualStyleBackColor = true;
+            this.rbOrdenID.AutoSize = true;
+            this.rbOrdenID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbOrdenID.Location = new System.Drawing.Point(16, 68);
+            this.rbOrdenID.Name = "rbOrdenID";
+            this.rbOrdenID.Size = new System.Drawing.Size(147, 24);
+            this.rbOrdenID.TabIndex = 7;
+            this.rbOrdenID.Text = "Ordenar por ID";
+            this.rbOrdenID.UseVisualStyleBackColor = true;
             // 
             // txtOrdenar
             // 
@@ -359,6 +360,8 @@ namespace Gestor_de_Afiliados
 
         
 
+
+
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -379,7 +382,7 @@ namespace Gestor_de_Afiliados
         private System.Windows.Forms.Button btnCargarArchivo;
         private System.Windows.Forms.RadioButton rbOrdenFechaD;
         private System.Windows.Forms.RadioButton rbOrdenFechaA;
-        private System.Windows.Forms.RadioButton rdbOrdenID;
+        private System.Windows.Forms.RadioButton rbOrdenID;
         private System.ComponentModel.BackgroundWorker bgwCargarDatos;
         private System.Windows.Forms.Button btnAplicarOrdenamiento;
         private System.ComponentModel.BackgroundWorker bgwFiltrarDatos;
