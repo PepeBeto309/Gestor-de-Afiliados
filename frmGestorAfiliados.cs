@@ -19,10 +19,10 @@ namespace Gestor_de_Afiliados
         private List<string> encabezadoColumnas;
         private Dictionary<string, string> mapaArchivos = new Dictionary<string, string>();
         private const string nombreProgramador = "Jose Alberto Carrillo Torres";
-        private DataTable _datosCargados;
+        private DataTable datosCargados;
 
         private readonly object _lockTabla = new object();
-        private Thread _hiloDeCarga;
+        private Thread hiloDeCarga;
         private delegate void DelegadoActualizarProgreso(int porcentaje, int registrosActuales, DataTable dtLote);
         private delegate void DelegadoFinalizarCarga(Exception ex);
 
@@ -46,14 +46,14 @@ namespace Gestor_de_Afiliados
             dgvTablaAfiliados.AutoGenerateColumns = true;
         }
 
-        // === Eventos de UI/Componentes ===
+            // Eventos de UI/Componentes
 
         // Cerrar el formulario
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_hiloDeCarga != null && _hiloDeCarga.IsAlive)
+            if (hiloDeCarga != null && hiloDeCarga.IsAlive)
             {
-                try { _hiloDeCarga.Abort(); } catch { }
+                try { hiloDeCarga.Abort(); } catch { }
             }
             this.Close();
         }
@@ -84,7 +84,7 @@ namespace Gestor_de_Afiliados
                 return;
             }
 
-            if (_hiloDeCarga != null && _hiloDeCarga.IsAlive)
+            if (hiloDeCarga != null && hiloDeCarga.IsAlive)
             {
                 MessageBox.Show("El proceso de carga ya está en curso.", "Ocupado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -98,24 +98,24 @@ namespace Gestor_de_Afiliados
 
             if (claveCompleta != null && mapaArchivos.TryGetValue(claveCompleta, out rutaArchivo))
             {
-                _datosCargados = new DataTable();
+                datosCargados = new DataTable();
 
                 // Definición de las columnas del DataTable con el tipo correcto para la Fecha
                 for (int i = 0; i < encabezadoColumnas.Count; i++)
                 {
                     Type dataType = (i == COLUMNA_FECHA_AFILIACION_INDICE) ? typeof(DateTime) : typeof(string);
-                    _datosCargados.Columns.Add(encabezadoColumnas[i], dataType);
+                    datosCargados.Columns.Add(encabezadoColumnas[i], dataType);
                 }
 
                 dgvTablaAfiliados.Columns.Clear();
-                dgvTablaAfiliados.DataSource = _datosCargados;
+                dgvTablaAfiliados.DataSource = datosCargados;
 
                 ConfigurarUI(true, nombreSeleccionadoSinExtension);
 
                 // Manejo del hilo de carga
-                _hiloDeCarga = new Thread(() => HiloCargarDatos(rutaArchivo));
-                _hiloDeCarga.IsBackground = true;
-                _hiloDeCarga.Start();
+                hiloDeCarga = new Thread(() => HiloCargarDatos(rutaArchivo));
+                hiloDeCarga.IsBackground = true;
+                hiloDeCarga.Start();
             }
             else
             {
@@ -126,14 +126,14 @@ namespace Gestor_de_Afiliados
         // Botón Aplicar Filtro (Municipio)
         private void btnAplicarFiltro_Click(object sender, EventArgs e)
         {
-            if (_datosCargados == null || _datosCargados.Rows.Count == 0)
+            if (datosCargados == null || datosCargados.Rows.Count == 0)
             {
                 MessageBox.Show("Primero debe cargar un archivo con registros.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             string municipioSeleccionado = cbbMunicipio.SelectedItem.ToString();
-            DataView dv = new DataView(_datosCargados);
+            DataView dv = new DataView(datosCargados);
             string filtro = string.Empty;
 
             if (municipioSeleccionado == "(Todos)")
@@ -194,7 +194,9 @@ namespace Gestor_de_Afiliados
             AplicarOrdenamiento(columnaSeleccionada, direccionSeleccionada);
         }
 
-        // === Funciones Auxiliares/Logicas ===
+        //------------------------------------------------------------------------------------------------------------------------------
+
+            // Funciones Auxiliares/Logicas
 
         // Método para parsear solo fechas con formato dd/MM/yyyy
         private DateTime? ParsearFechaSoloDDMMYYYY(object valorCelda)
@@ -227,7 +229,7 @@ namespace Gestor_de_Afiliados
                     var worksheet = package.Workbook.Worksheets.FirstOrDefault();
                     if (worksheet == null || worksheet.Dimension == null) return;
 
-                    DataTable dtBase = _datosCargados.Clone();
+                    DataTable dtBase = datosCargados.Clone();
 
                     int filaInicial = worksheet.Dimension.Start.Row + 1;
                     int totalFilas = worksheet.Dimension.End.Row;
@@ -328,7 +330,7 @@ namespace Gestor_de_Afiliados
             {
                 foreach (DataRow row in dtLote.Rows)
                 {
-                    _datosCargados.ImportRow(row);
+                    datosCargados.ImportRow(row);
                 }
             }
 
@@ -348,18 +350,18 @@ namespace Gestor_de_Afiliados
                     MessageBox.Show($"Ocurrió un error al cargar el archivo: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 dgvTablaAfiliados.DataSource = null;
-                _datosCargados = null;
+                datosCargados = null;
                 return;
             }
 
-            if (_datosCargados != null && _datosCargados.Rows.Count > 0)
+            if (datosCargados != null && datosCargados.Rows.Count > 0)
             {
-                int totalRegistros = _datosCargados.Rows.Count;
+                int totalRegistros = datosCargados.Rows.Count;
                 sslEstadoArchivos.Text = $"Carga completada. Total de registros: {totalRegistros:N0}.";
 
                 AjustarAnchoColumnas();
 
-                CargarFiltroMunicipios(_datosCargados);
+                CargarFiltroMunicipios(datosCargados);
                 cbbMunicipio.Enabled = true;
                 btnAplicarFiltro.Enabled = true;
             }
@@ -482,7 +484,7 @@ namespace Gestor_de_Afiliados
         // Aplica el ordenamiento al DataGridView según la columna y dirección especificada
         private void AplicarOrdenamiento(string columna, ListSortDirection direccion)
         {
-            if (_datosCargados == null || _datosCargados.Rows.Count == 0)
+            if (datosCargados == null || datosCargados.Rows.Count == 0)
             {
                 MessageBox.Show("Primero debe cargar un archivo con registros.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -492,7 +494,7 @@ namespace Gestor_de_Afiliados
 
             if (dv == null)
             {
-                dv = new DataView(_datosCargados);
+                dv = new DataView(datosCargados);
             }
 
             string sortExpression = $"{columna} {(direccion == ListSortDirection.Ascending ? "ASC" : "DESC")}";

@@ -55,7 +55,6 @@ namespace Gestor_de_Afiliados
             this.bgwFiltrarDatos = new System.ComponentModel.BackgroundWorker();
             this.bgwOrdenarDatos = new System.ComponentModel.BackgroundWorker();
             this.stsEstadoFunciones = new System.Windows.Forms.StatusStrip();
-            this.sslEstado = new System.Windows.Forms.ToolStripStatusLabel();
             this.prgEstatus = new System.Windows.Forms.ToolStripProgressBar();
             this.sslEstadoArchivos = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -295,7 +294,6 @@ namespace Gestor_de_Afiliados
             // stsEstadoFunciones
             // 
             this.stsEstadoFunciones.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sslEstado,
             this.prgEstatus,
             this.sslEstadoArchivos});
             this.stsEstadoFunciones.Location = new System.Drawing.Point(0, 539);
@@ -303,12 +301,6 @@ namespace Gestor_de_Afiliados
             this.stsEstadoFunciones.Size = new System.Drawing.Size(1184, 22);
             this.stsEstadoFunciones.TabIndex = 7;
             this.stsEstadoFunciones.Text = "statusStrip1";
-            // 
-            // sslEstado
-            // 
-            this.sslEstado.Name = "sslEstado";
-            this.sslEstado.Size = new System.Drawing.Size(42, 17);
-            this.sslEstado.Text = "Estado";
             // 
             // prgEstatus
             // 
@@ -388,7 +380,6 @@ namespace Gestor_de_Afiliados
         private System.ComponentModel.BackgroundWorker bgwFiltrarDatos;
         private System.ComponentModel.BackgroundWorker bgwOrdenarDatos;
         private System.Windows.Forms.StatusStrip stsEstadoFunciones;
-        private System.Windows.Forms.ToolStripStatusLabel sslEstado;
         private System.Windows.Forms.ToolStripProgressBar prgEstatus;
         private System.Windows.Forms.ToolStripStatusLabel sslEstadoArchivos;
     }
