@@ -237,7 +237,7 @@ namespace Gestor_de_Afiliados
                     int totalColumnasRequeridas = TOTAL_COLUMNAS_REQUERIDAS;
 
                     DataTable dtLote = dtBase.Clone();
-                    const int TAMANO_LOTE = 5000;
+                    const int TAMLOTE = 5000;
                     int filasProcesadasDesdeUltimoLote = 0;
 
                     for (int fila = filaInicial; fila <= totalFilas; fila++)
@@ -267,7 +267,7 @@ namespace Gestor_de_Afiliados
                         dtLote.Rows.Add(nuevaFila);
                         filasProcesadasDesdeUltimoLote++;
 
-                        if (filasProcesadasDesdeUltimoLote >= TAMANO_LOTE || fila == totalFilas)
+                        if (filasProcesadasDesdeUltimoLote >= TAMLOTE || fila == totalFilas)
                         {
                             int registrosProcesadosTotal = fila - filaInicial + 1;
                             int progreso = (int)(((double)registrosProcesadosTotal / totalRegistros) * 100);
